@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Model\DishManager;
+
 class HomeController extends AbstractController
 {
     /**

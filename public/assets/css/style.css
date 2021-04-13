@@ -18,15 +18,34 @@
 }
 
 header {
+    --header-height: 500px;
+    --header-background: url('../images/pizza_header.jpg');
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../images/pizza_header.jpg');
+    background-image: var(--header-background);
     background-size: cover;
-    height: 500px;
+    height: var(--header-height);
 }
 
 h1 {
     color: var(--light);
     font-family: var(--title-font);
-} 
+}
+
+h2, h3 {
+    color: var(--primary);
+    font-family: var(--title-font);
+}
+
+.dish-card {
+    --card-color: rgb(224, 224, 224);
+    --dish-height: 250px;
+    height: var(--dish-height);
+    background-color: var(--card-color);
+}
+
+.dish-card img {
+    height: var(--dish-height);
+    object-fit: cover;
+}
