@@ -8,10 +8,11 @@
 
 	<main class="container">
 		<h1 class="mt-5 pb-2">
-			Ajouter un plat
+			Modifier un plat
 		</h1>
 
-		{% include 'Admin/Dish/_form.html.twig' %}
+		{% include 'Admin/Dish/_form.html.twig' with {buttonName: 'Modifier'} %}
+
 		<div class="mt-2">
 			<a class="btn btn-outline-secondary" href="/adminDish/index">Retour</a>
 		</div>
