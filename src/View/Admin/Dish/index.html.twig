@@ -1,0 +1,40 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="/assets/css/admin_dish.css">
+{% endblock %}
+
+{% block content %}
+
+	<main class="container">
+		<h1 class="mt-5 pb-2">
+			Liste des plats
+		</h1>
+
+        <a class="btn btn-primary" href="/adminDish/add">Ajouter un plat</a>
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Image</th>
+					<th>Nom</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for dish in dishes %}
+					<tr>
+						<td><img class="dish-image" src="{{ dish.image }}" alt=""/></td>
+						<td>{{ dish.name}}</td>
+						<td>
+							<a class="btn btn-sm btn-secondary" href="/adminDish/edit/{{ dish.id }}">Editer</a>
+							<form method="POST" onSubmit="return confirm('Voulez vous supprimer ?');" action="/adminDish/delete/{{dish.id}}">
+								<button class="mt-1 btn btn-sm btn-danger">Supprimer</button>
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</main>
+{% endblock %}
