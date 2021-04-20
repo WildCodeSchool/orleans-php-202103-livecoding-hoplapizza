@@ -26,7 +26,12 @@
 					<tr>
 						<td><img class="dish-image" src="{{ dish.image }}" alt=""/></td>
 						<td>{{ dish.name}}</td>
-						<td><a class="btn btn-sm btn-secondary" href="/adminDish/edit/{{ dish.id }}">Editer</a></td>
+						<td>
+							<a class="btn btn-sm btn-secondary" href="/adminDish/edit/{{ dish.id }}">Editer</a>
+							<form method="POST" onSubmit="return confirm('Voulez vous supprimer ?');" action="/adminDish/delete/{{dish.id}}">
+								<button class="mt-1 btn btn-sm btn-danger">Supprimer</button>
+							</form>
+						</td>
 					</tr>
 				{% endfor %}
 			</tbody>

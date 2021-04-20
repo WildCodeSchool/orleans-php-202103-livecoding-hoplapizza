@@ -101,4 +101,14 @@ class AdminDishController extends AbstractController
 
         return $errors;
     }
+
+    public function delete(int $id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $dishManager = new DishManager();
+            $dishManager->delete($id);
+
+            header('Location: /adminDish/index');
+        }
+    }
 }
