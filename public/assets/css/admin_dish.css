@@ -1,0 +1,18 @@
+body {
+    padding-top: 70px;
+}
+
+h1 {
+    color: var(--primary);
+} 
+
+.dish-image {
+    --size: 40px;
+    width: var(--size);
+    height: var(--size);
+    object-fit: contain;
+}
+
+table td {
+    vertical-align: middle;
+}

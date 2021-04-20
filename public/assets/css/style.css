@@ -71,3 +71,7 @@ h2 svg {
 .dish-card:hover { 
     filter: brightness(103%);
 }
+
+.empty:empty {
+    display:none;
+}
