@@ -10,6 +10,15 @@
 		<input type="text" class="form-control" id="name" name="name" placeholder="Calzone" value="{{ dish.name }}" required>
 	</div>
 	<div class="mb-3">
+		<label for="category" class="form-label">Categorie</label>
+		<select class="form-control" name="category" id="category">
+		{% for category in categories %}
+			<option {{ dish.category == category.id ? 'selected' : '' }} value="{{ category.id }}">{{ category.name }}</option>
+		{% endfor %}
+		</select>
+	</div>
+
+	<div class="mb-3">
 		<label for="image" class="form-label">Image</label>
 		<input type="url" class="form-control" id="image" name="image" value="{{ dish.image }}" placeholder="http://monimage.jpg" required>
 	</div>

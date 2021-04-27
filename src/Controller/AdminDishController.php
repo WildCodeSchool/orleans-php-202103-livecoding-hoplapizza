@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\CategoryManager;
 use App\Model\DishManager;
 
 class AdminDishController extends AbstractController
@@ -11,7 +12,7 @@ class AdminDishController extends AbstractController
     public function index(): string
     {
         $dishManager = new DishManager();
-        $dishes = $dishManager->selectAll();
+        $dishes = $dishManager->selectAllWithCategory();
 
         return $this->twig->render('Admin/Dish/index.html.twig', [
             'dishes' => $dishes,
@@ -21,8 +22,10 @@ class AdminDishController extends AbstractController
     public function add(): string
     {
         $errors = $dish = [];
-
+        $categoryManager = new CategoryManager();
+        $categories = $categoryManager->selectAll('name', 'DESC');
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
             $dish = array_map('trim', $_POST);
 
             $errors = $this->validate($dish);
@@ -36,10 +39,11 @@ class AdminDishController extends AbstractController
                 header('Location: /adminDish/index');
             }
         }
-
+        var_dump($dish);    
         return $this->twig->render('Admin/Dish/add.html.twig', [
             'errors' => $errors,
             'dish' => $dish,
+            'categories' => $categories, 
         ]);
     }
 
@@ -77,7 +81,17 @@ class AdminDishController extends AbstractController
 
     private function validate(array $dish): array
     {
+        $categoryManager = new CategoryManager();
+        $categories = $categoryManager->selectAll('name', 'DESC');
+        $categoryIds = array_column($categories, 'id');
+        // foreach($categories as $category) {
+        //     $categoryIds[] = $category['id'];
+        // }
+
         $errors = [];
+        if (!in_array($dish['category'], $categoryIds)) {
+            $errors[] = 'Catégorie incorrecte';
+        }
 
         if (empty($dish['name'])) {
             $errors[] = 'Le champ nom est requis';
