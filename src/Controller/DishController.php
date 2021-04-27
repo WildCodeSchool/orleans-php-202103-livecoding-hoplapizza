@@ -12,10 +12,15 @@ class DishController extends AbstractController
     public function index()
     {
         $dishManager = new DishManager();
-        $dishes = $dishManager->selectAll();
+        $categoryDishes = $dishManager->selectAllWithCategory();
+        $categories = [];
+        foreach ($categoryDishes as $categoryDish) {
+            $category = $categoryDish['category_name'];
+            $categories[$category][] = $categoryDish;
+        }
 
         return $this->twig->render('Dish/index.html.twig', [
-            'dishes' => $dishes,
+            'categories' => $categories,
         ]);
     }
 }
