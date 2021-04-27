@@ -25,7 +25,6 @@ class AdminDishController extends AbstractController
         $categoryManager = new CategoryManager();
         $categories = $categoryManager->selectAll('name', 'DESC');
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
             $dish = array_map('trim', $_POST);
 
             $errors = $this->validate($dish);
@@ -39,11 +38,11 @@ class AdminDishController extends AbstractController
                 header('Location: /adminDish/index');
             }
         }
-        var_dump($dish);    
+        var_dump($dish);
         return $this->twig->render('Admin/Dish/add.html.twig', [
             'errors' => $errors,
             'dish' => $dish,
-            'categories' => $categories, 
+            'categories' => $categories,
         ]);
     }
 

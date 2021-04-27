@@ -6,7 +6,7 @@ class DishManager extends AbstractManager
 {
     public const TABLE = 'dish';
 
-    public function selectAllWithCategory() 
+    public function selectAllWithCategory()
     {
         $query = 'SELECT d.*, c.name AS category_name  FROM ' . self::TABLE . ' d
                   JOIN ' . CategoryManager::TABLE . ' c ON c.id = d.category_id';
