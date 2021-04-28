@@ -8,6 +8,8 @@ use App\Model\DishManager;
 class AdminDishController extends AbstractController
 {
     public const MAX_FIELD_LENGTH = 255;
+    public const MAX_UPLOAD_FILESIZE = 100000;
+    public const ALLOWED_MIMES = ['image/jpeg', 'image/png'];
 
     public function index(): string
     {
@@ -27,9 +29,17 @@ class AdminDishController extends AbstractController
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $dish = array_map('trim', $_POST);
 
-            $errors = $this->validate($dish);
+            $dataErrors = $this->validate($dish);
+            $fileErrors = $this->validateFile($_FILES['image']);
+
+            $errors = array_merge($dataErrors, $fileErrors);
 
             if (empty($errors)) {
+                $fileName = uniqid() . '_' . $_FILES['image']['name'];
+                $dish['image'] = $fileName;
+
+                move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../../public/uploads/' .  $fileName);
+
                 // insert en database
                 $dishManager = new DishManager();
                 $dishManager->insert($dish);
@@ -38,7 +48,7 @@ class AdminDishController extends AbstractController
                 header('Location: /adminDish/index');
             }
         }
-        var_dump($dish);
+
         return $this->twig->render('Admin/Dish/add.html.twig', [
             'errors' => $errors,
             'dish' => $dish,
@@ -58,8 +68,6 @@ class AdminDishController extends AbstractController
         }
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            $dish = array_map('trim', $_POST);
-
             $errors = $this->validate($dish);
 
             if (empty($errors)) {
@@ -76,6 +84,25 @@ class AdminDishController extends AbstractController
             'errors' => $errors,
             'dish' => $dish,
         ]);
+    }
+
+    private function validateFile(array $file): array
+    {
+        $errors = [];
+
+        if ($file['error'] != 0) {
+            $errors[] = 'Problème lors de l\'upload';
+        } else {
+            if ($file['size'] > self::MAX_UPLOAD_FILESIZE) {
+                $errors[] = 'Le fichier doit faire moins de ' . self::MAX_UPLOAD_FILESIZE / 1000000 . 'Mo';
+            }
+
+            if (!in_array(mime_content_type($file['tmp_name']), self::ALLOWED_MIMES)) {
+                $errors[] = 'Le fichier doit être de type ' . implode(', ', self::ALLOWED_MIMES);
+            }
+        }
+
+        return $errors;
     }
 
     private function validate(array $dish): array
@@ -96,20 +123,8 @@ class AdminDishController extends AbstractController
             $errors[] = 'Le champ nom est requis';
         }
 
-        if (empty($dish['image'])) {
-            $errors[] = 'Le champ image est requis';
-        }
-
         if (strlen($dish['name']) > self::MAX_FIELD_LENGTH) {
             $errors[] = 'Le champ nom doit faire moins de ' . self::MAX_FIELD_LENGTH . ' caractères';
-        }
-
-        if (strlen($dish['image']) > self::MAX_FIELD_LENGTH) {
-            $errors[] = 'Le champ image doit faire moins de ' . self::MAX_FIELD_LENGTH . ' caractères';
-        }
-
-        if (!filter_var($dish['image'], FILTER_VALIDATE_URL)) {
-            $errors[] = 'Le champ image doit être une URL';
         }
 
         return $errors;
@@ -119,6 +134,12 @@ class AdminDishController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dishManager = new DishManager();
+            $dish = $dishManager->selectOneById($id);
+            $path =  __DIR__ . '/../../public/uploads/' . $dish['image'];
+            if (file_exists($path)) {
+                unlink($path);
+            }
+
             $dishManager->delete($id);
 
             header('Location: /adminDish/index');

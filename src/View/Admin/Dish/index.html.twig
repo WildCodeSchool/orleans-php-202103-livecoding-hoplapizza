@@ -25,7 +25,7 @@
 			<tbody>
 				{% for dish in dishes %}
 					<tr>
-						<td><img class="dish-image" src="{{ dish.image }}" alt=""/></td>
+						<td><img class="dish-image" src="/uploads/{{ dish.image }}" alt=""/></td>
 						<td>{{ dish.name}}</td>
 						<td>{{ dish.category_name }}</td>
 						<td>
