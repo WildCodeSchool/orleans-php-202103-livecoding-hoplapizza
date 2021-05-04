@@ -27,7 +27,10 @@
 							</div>
 							<div class="col-md-8">
 								<div class="card-body">
-									<h3 class="card-title">{{ dish.name}}</h3>
+									<h3 class="card-title d-flex justify-content-between">
+										{{ dish.name}}
+										<span class="badge bg-hop">{{ dish.price}}€</span>
+									</h3>
 									<p class="card-text">{{ dish.description }}</p>
 								</div>
 							</div>
