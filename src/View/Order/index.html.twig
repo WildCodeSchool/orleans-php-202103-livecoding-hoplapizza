@@ -1,0 +1,35 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="/assets/css/order.css">
+{% endblock %}
+
+{% block content %}
+	<header>
+		<h1 class="m-2">Ma commande</h1>
+	</header>
+	<main class="container mt-5">
+		{% if dishes is not empty %}
+			<table class="table table-hover order ">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Plat</th>
+						<th>Prix</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for dish in dishes %}
+						<tr>
+							<td><img src="/uploads/{{ dish.image }}" alt=""></td>
+							<td>{{ dish.name }}</td>
+							<td>{{ dish.price }}€</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% else %}
+			<div class="alert alert-warning">Le panier est vide</div>
+		{% endif %}
+	</main>
+{% endblock %}

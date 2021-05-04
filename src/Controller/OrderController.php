@@ -16,6 +16,17 @@ class OrderController extends AbstractController
         if ($dish) {
             $_SESSION['order'][$id] = $dish;
         }
-        header("Location: order/index");
+        header("Location: /order/index");
+    }
+
+    /**
+     * List an order
+     */
+    public function index()
+    {
+        $dishes = $_SESSION['order'] ?? [];
+        return $this->twig->render('Order/index.html.twig', [
+            'dishes' => $dishes,
+        ]);
     }
 }
