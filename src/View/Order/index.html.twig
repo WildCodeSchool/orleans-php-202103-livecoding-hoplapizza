@@ -36,6 +36,21 @@
 				</tbody>
 			</table>
 			<a class="btn btn-danger btn-sm" href="/order/empty">Vider le panier</a>
+			<section>
+				<h2 class="mt-5">Confirmation</h2>
+				<ul>
+				{% for error in errors %} 
+					<li>{{ error }}</li>
+				{% endfor %}
+				</ul>
+				<form action="" method="post" novalidate>
+					<div class="mb-3">
+						<label for="email" class="form-label">Email</label>
+						<input type="email" name="email" id="email" class="form-control" value="{{order.email}}" required>
+					</div>
+					<button class="btn btn-success">Confimer la commande</button>
+				</form>
+			</section>
 		{% else %}
 			<div class="alert alert-warning">Le panier est vide</div>
 		{% endif %}
