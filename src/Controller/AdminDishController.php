@@ -8,7 +8,7 @@ use App\Model\DishManager;
 class AdminDishController extends AbstractController
 {
     public const MAX_FIELD_LENGTH = 255;
-    public const MAX_UPLOAD_FILESIZE = 100000;
+    public const MAX_UPLOAD_FILESIZE = 1000000;
     public const ALLOWED_MIMES = ['image/jpeg', 'image/png'];
 
     public function index(): string
@@ -115,7 +115,7 @@ class AdminDishController extends AbstractController
         // }
 
         $errors = [];
-        if (!in_array($dish['category'], $categoryIds)) {
+        if (!empty($dish['category']) && !in_array($dish['category'], $categoryIds)) {
             $errors[] = 'Catégorie incorrecte';
         }
 
@@ -125,6 +125,13 @@ class AdminDishController extends AbstractController
 
         if (strlen($dish['name']) > self::MAX_FIELD_LENGTH) {
             $errors[] = 'Le champ nom doit faire moins de ' . self::MAX_FIELD_LENGTH . ' caractères';
+        }
+
+        if (!is_numeric($dish['price'])) {
+            $errors[] = 'Le champ prix doit être un nombre';
+        }
+        if ($dish['price'] < 0) {
+            $errors[] = 'Le champ prix doit être un nombre positif';
         }
 
         return $errors;

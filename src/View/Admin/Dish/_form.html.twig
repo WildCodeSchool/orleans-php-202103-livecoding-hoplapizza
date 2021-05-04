@@ -17,6 +17,10 @@
 		{% endfor %}
 		</select>
 	</div>
+	<div class="mb-3">
+		<label  class="form-label" for="price">Prix</label>
+		<input type="number" class="form-control" id="price" min="0" step="0.1" name="price" value="{{ dish.price }}"> 
+	</div>
 
 	<div class="mb-3">
 		<label for="image" class="form-label">Image</label>

@@ -19,6 +19,7 @@
 					<th>Image</th>
 					<th>Nom</th>
 					<th>Catégorie</th>
+					<th>Prix</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -28,6 +29,7 @@
 						<td><img class="dish-image" src="/uploads/{{ dish.image }}" alt=""/></td>
 						<td>{{ dish.name}}</td>
 						<td>{{ dish.category_name }}</td>
+						<td>{{ dish.price }}€</td>
 						<td>
 							<a class="btn btn-sm btn-secondary" href="/adminDish/edit/{{ dish.id }}">Editer</a>
 							<form method="POST" onSubmit="return confirm('Voulez vous supprimer ?');" action="/adminDish/delete/{{dish.id}}">
