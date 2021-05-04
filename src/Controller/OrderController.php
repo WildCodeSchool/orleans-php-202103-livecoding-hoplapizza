@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Model\DishManager;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
 
 class OrderController extends AbstractController
 {
@@ -61,6 +64,24 @@ class OrderController extends AbstractController
             if (empty($errors)) {
                 // enregistrer l'order en database
                 // envoyer un email de confirmation
+                $transport = Transport::fromDsn(MAILER_DSN);
+                $mailer = new Mailer($transport);
+
+                $html = $this->twig->render('Order/email.html.twig', [
+                    'dishes' => $_SESSION['order'],
+                    'order' => $order,
+                ]);
+
+                $email = (new Email())
+                    ->from(MAIL_FROM)
+                    ->to($order['email'])
+                    ->subject('Hop la pizza - confirmation de commande')
+                    ->html($html);
+
+                $mailer->send($email);
+
+                unset($_SESSION['order']);
+
                 header('Location: /home/index/?notification=La commande est bien passée');
             }
         }
