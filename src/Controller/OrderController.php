@@ -29,4 +29,13 @@ class OrderController extends AbstractController
             'dishes' => $dishes,
         ]);
     }
+
+    /**
+     * Empty cart
+     */
+    public function empty()
+    {
+        unset($_SESSION['order']);
+        header("Location: /order/index");
+    }
 }
