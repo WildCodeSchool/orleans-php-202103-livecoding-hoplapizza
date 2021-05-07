@@ -13,7 +13,7 @@ try {
         $statement = $pdo->prepare($sql);
         $statement->execute();
     } else {
-        echo DB_DUMP_PATH . ' file does not exist';
+        print(DB_DUMP_PATH . ' file does not exist');
     }
 } catch (PDOException $exception) {
     echo $exception->getMessage();
