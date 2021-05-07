@@ -2,8 +2,7 @@
 
 php /var/www/migration.sql
 
-chmod -R 777 /var/www/var
-chmod -R 777 /var/www/public
+chmod -R 777 /var/www/public/uploads
 
 ## server config
 php-fpm &

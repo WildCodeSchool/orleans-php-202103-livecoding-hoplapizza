@@ -8,12 +8,12 @@ require 'config/db.php';
 
 try {
     $pdo = (new Connection())->getPdoConnection();
-    if (file_exists(__DIR__ . '/database.sql')) {
-        $sql = file_get_contents(__DIR__ . '/database.sql');
+    if (file_exists('DB_DUMP_PATH')) {
+        $sql = file_get_contents('DB_DUMP_PATH');
         $statement = $pdo->prepare($sql);
         $statement->execute();
     } else {
-        echo 'No database.sql file';
+        echo DB_DUMP_PATH . ' file does not exist';
     }
 } catch (PDOException $exception) {
     echo $exception->getMessage();
